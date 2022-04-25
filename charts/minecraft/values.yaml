@@ -147,11 +147,11 @@ minecraftServer:
   # Max view distance (in chunks).
   viewDistance: 10
   # Define this if you want a specific map generation seed.
-  levelSeed:
+  levelSeed: 288858475
   # One of: creative, survival, adventure, spectator
   gameMode: survival
   # Message of the Day
-  motd: "Welcome to Minecraft on Kubernetes!"
+  motd: "Welcome to Felomeisters Minecraft Server!"
   # If true, enable player-vs-player damage.
   pvp: false
   # One of: DEFAULT, FLAT, LARGEBIOMES, AMPLIFIED, CUSTOMIZED
