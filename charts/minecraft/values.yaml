@@ -147,7 +147,7 @@ minecraftServer:
   # Max view distance (in chunks).
   viewDistance: 10
   # Define this if you want a specific map generation seed.
-  levelSeed: 868565861386474240
+  levelSeed: "868565861386474240"
   # One of: creative, survival, adventure, spectator
   gameMode: survival
   # Message of the Day
