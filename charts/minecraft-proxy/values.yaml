@@ -1,6 +1,9 @@
 # ref: https://hub.docker.com/r/itzg/docker-bungeecord/
-image: itzg/bungeecord
-imageTag: latest
+image:
+  repository: itzg/bungeecord
+  tag: latest
+  pullPolicy: IfNotPresent
+
 imagePullSecret: ""
 
 ## Configure resource requests and limits
@@ -44,6 +47,16 @@ startupProbe:
 #         mountPath: /mnt/volume
 #         readOnly: true
 initContainers: []
+
+# sidecarContainers:
+#   - name: do-something
+#     image: busybox
+#     command: ['do', 'something']
+#     volumesMounts:
+#       - name: nfs
+#         mountPath: /mnt/volume
+#         readOnly: true
+sidecarContainers: []
 
 # extraVolumes:
 #   - volumeMounts:
@@ -174,6 +187,8 @@ minecraftProxy:
     #     embedded: false
     #     annotations: {}
     #     type: ClusterIP
+    #     ## Set the external port if the rcon serviceType is NodePort
+    ##     nodePort:
     #     loadBalancerIP: ""
     #     loadBalancerSourceRanges: []
     #     externalTrafficPolicy: Cluster
@@ -194,8 +209,15 @@ minecraftProxy:
     #           - vote.local
 
 ## Additional minecraft container environment variables
+## Values can be either variable values or `valueFrom` yaml
 ##
-extraEnv: {}
+extraEnv:
+  {}
+  # some_variable: some value
+  # another_variable:
+  #   valueFrom:
+  #     fieldRef:
+#       fieldPath: status.hostIP
 
 persistence:
   ## minecraft data Persistent Volume Storage Class

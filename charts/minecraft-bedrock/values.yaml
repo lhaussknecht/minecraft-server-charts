@@ -1,7 +1,9 @@
 # ref: https://hub.docker.com/r/itzg/minecraft-server/
-image: itzg/minecraft-bedrock-server
-imageTag: latest
-imagePullSecret: ""
+image:
+  repository: itzg/minecraft-bedrock-server
+  tag: latest
+  pullPolicy: IfNotPresent
+  pullSecret: ""
 
 ## Configure resource requests and limits
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
@@ -108,6 +110,10 @@ minecraftServer:
   maxThreads: 8
   # Cheat like commands can be used.
   cheats: false
+  # Enable emit server telemetry.
+  emitServerTelemetry: false
+  # Enable lan visibility.
+  enableLanVisibility: false
   # type of kubernetes service to use
   serviceType: ClusterIP
   ## Set the port used if the serviceType is NodePort

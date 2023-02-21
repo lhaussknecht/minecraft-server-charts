@@ -23,9 +23,9 @@ spec:
       {{- if .Values.serviceAcccoutName }}
       serviceAccountName: {{ .Values.serviceAccountName }}
       {{- end }}
-      {{- if .Values.imagePullSecret }}
+      {{- if .Values.image.pullSecret }}
       imagePullSecrets:
-        - name: {{ .Values.imagePullSecret }}
+        - name: {{ .Values.image.pullSecret }}
       {{- end }}
       securityContext:
         runAsUser: {{ .Values.securityContext.runAsUser }}
@@ -33,7 +33,7 @@ spec:
       initContainers: {{- toYaml .Values.initContainers | nindent 8 }}
       containers:
       - name: {{ template "proxy.fullname" . }}
-        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: Always
         resources: {{ toYaml .Values.resources | nindent 10 }}
         {{- if .Values.startupProbe.enabled }}
@@ -95,9 +95,9 @@ spec:
           value: {{ .Values.minecraftProxy.jarRevision }}
         {{- end }}
         {{- end }}
-        {{- if .Values.plugins }}
+        {{- if .Values.minecraftProxy.plugins }}
         - name: PLUGINS
-          value: {{ include "helm-toolkit.utils.joinListWithComma" .Values.plugins }}
+          value: {{ join "," .Values.minecraftProxy.plugins }}
         {{- end }}
         - name: MEMORY
           value: {{ .Values.minecraftProxy.memory | quote }}
@@ -117,10 +117,18 @@ spec:
           value: "false"
         {{- end }}
 
-        {{- range $key, $value := .Values.extraEnv }}
+      {{- range $key, $value := .Values.extraEnv }}
+      {{-   if kindIs "map" $value }}
+      {{-     if hasKey $value "valueFrom" }}
+        - name: {{ $key }}
+          valueFrom:
+            {{- $value.valueFrom | toYaml | nindent 12 }}
+      {{-     end }}
+      {{-   else }}
         - name: {{ $key }}
           value: {{ $value | quote }}
-        {{- end }}
+      {{-   end }}
+      {{- end }}
 
         ports:
         - name: proxy
@@ -151,8 +159,13 @@ spec:
           subPath: config.yml
         {{- end }}
         {{- range .Values.extraVolumes }}
-        {{- toYaml .volumeMounts | nindent 8 }}
+        {{-   if .volumeMounts }}
+        {{-     toYaml .volumeMounts | nindent 8 }}
+        {{-   end }}
         {{- end }}
+      {{- if .Values.sidecarContainers }}
+      {{- toYaml .Values.sidecarContainers | nindent 6 }}
+      {{- end }}
       volumes:
       - name: datadir
       {{- if .Values.persistence.dataDir.enabled }}
