@@ -205,7 +205,7 @@ minecraftServer:
   ## Set the port used if the serviceType is NodePort
   nodePort:
   # Set the external port of the service, usefull when using the LoadBalancer service type
-  # servicePort: 25565
+  servicePort: 25565
   clusterIP:
   loadBalancerIP:
   # loadBalancerSourceRanges: []
@@ -266,21 +266,6 @@ minecraftServer:
     #       - secretName: map-tls
     #         hosts:
     #           - map.local
-  
-  ingress:
-    ingressClassName: nginx
-    enabled: false
-    annotations:
-    # Deprecated way for specifying the ingressClass. Kube.version < 1.18
-    #       kubernetes.io/ingress.class: nginx
-      kubernetes.io/tls-acme: "true"
-      hosts:
-      - name: map.local
-        path: /
-      tls:
-        - secretName: map-tls
-           hosts:
-            - map.local
 
   query:
     # If you enable this, your server will be "published" to Gamespy
