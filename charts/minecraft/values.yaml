@@ -36,7 +36,7 @@ securityContext:
 livenessProbe:
   command:
     - mc-health
-  initialDelaySeconds: 30
+  initialDelaySeconds: 240
   periodSeconds: 5
   failureThreshold: 20
   successThreshold: 1
@@ -44,7 +44,7 @@ livenessProbe:
 readinessProbe:
   command:
     - mc-health
-  initialDelaySeconds: 30
+  initialDelaySeconds: 240
   periodSeconds: 5
   failureThreshold: 20
   successThreshold: 1
@@ -97,13 +97,13 @@ minecraftServer:
   # One of: LATEST, SNAPSHOT, or a specific version (ie: "1.7.9").
   version: "LATEST"
   # This can be one of "VANILLA", "FORGE", "SPIGOT", "BUKKIT", "PAPER", "FTBA", "SPONGEVANILLA", "CURSEFORGE"
-  type: "VANILLA"
+  type: "FORGE"
   # If type is set to FORGE, this sets the version; this is ignored if forgeInstallerUrl is set
   forgeVersion:
   # If type is set to SPONGEVANILLA, this sets the version
   spongeVersion:
   # If type is set to FORGE, this sets the URL to download the Forge installer
-  forgeInstallerUrl:
+  forgeInstallerUrl: https://adfoc.us/serve/sitelinks/?id=271228&url=https://maven.minecraftforge.net/net/minecraftforge/forge/1.19.3-44.1.0/forge-1.19.3-44.1.0-installer.jar
   # If type is set to BUKKIT, this sets the URL to download the Bukkit package
   bukkitDownloadUrl:
   # If type is set to SPIGOT, this sets the URL to download the Spigot package
@@ -169,7 +169,7 @@ minecraftServer:
   # When levelType == FLAT or CUSTOMIZED, this can be used to further customize map generation.
   # ref: https://hub.docker.com/r/itzg/minecraft-server/
   generatorSettings:
-  worldSaveName: world
+  worldSaveName: world_vulcano
   # If set, this URL will be downloaded at startup and used as a starting point
   downloadWorldUrl:
   # force re-download of server file
@@ -297,12 +297,12 @@ persistence:
   ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
   ##   GKE, AWS & OpenStack)
   ##
-  # storageClass: "-"
+  storageClass: longhorn
   dataDir:
     # Set this to false if you don't care to persist state between restarts.
     enabled: true
     # existingClaim: nil
-    Size: 1Gi
+    Size: 4Gi
     # existingClaim: nil
     ## specify a subpath in the volume where the data is. Useful when sharing volumes with other apps.
     # subPath: /path/to/dataDir
